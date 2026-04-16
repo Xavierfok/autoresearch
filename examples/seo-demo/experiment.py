@@ -47,19 +47,19 @@ from db import (
 )
 
 
-# --- simulated blog posts ---
+# --- real articles from dataresearchtools.com (simulated metrics) ---
 
 FAKE_POSTS = [
-    {"id": "p1", "name": "how to set up a 4G proxy server", "metric": 120},
-    {"id": "p2", "name": "mobile proxy vs datacenter proxy", "metric": 85},
-    {"id": "p3", "name": "rotating proxies for web scraping", "metric": 200},
-    {"id": "p4", "name": "residential proxy buying guide", "metric": 150},
-    {"id": "p5", "name": "proxy authentication methods explained", "metric": 60},
-    {"id": "p6", "name": "best proxy protocols comparison", "metric": 95},
-    {"id": "p7", "name": "how to test proxy speed and reliability", "metric": 110},
-    {"id": "p8", "name": "proxy server security best practices", "metric": 75},
-    {"id": "p9", "name": "4G LTE proxy farm setup tutorial", "metric": 180},
-    {"id": "p10", "name": "Singapore mobile proxy advantages", "metric": 140},
+    {"id": "8505", "name": "best web scraping tools in 2026: the mega comparison guide", "metric": 340},
+    {"id": "8504", "name": "build a RAG chatbot with web scraping: the complete python tutorial", "metric": 180},
+    {"id": "8495", "name": "how to benchmark proxy providers: a rigorous methodology", "metric": 220},
+    {"id": "8492", "name": "build a news crawler in python: step-by-step tutorial", "metric": 160},
+    {"id": "8488", "name": "proxy industry report 2026: market size, trends, and forecasts", "metric": 280},
+    {"id": "6096", "name": "best Philippines proxy providers 2026: Filipino IP address guide", "metric": 95},
+    {"id": "6090", "name": "best Thailand proxy providers 2026: Thai IP addresses for every use case", "metric": 110},
+    {"id": "843", "name": "mobile proxies for SEO rank tracking and SERP monitoring", "metric": 420},
+    {"id": "842", "name": "proxy authentication methods: IP whitelisting vs username/password", "metric": 150},
+    {"id": "799", "name": "proxy automation: scripting multi-account workflows with mobile proxies", "metric": 190},
 ]
 
 
@@ -76,13 +76,21 @@ def select_targets() -> list[dict]:
 
 
 def apply_strategy(target: dict, strategy: dict) -> str:
-    """simulate applying strategy - just transform the title."""
+    """simulate applying strategy - realistic title rewrite."""
     title = target["name"]
-    # simulate a rewrite
-    power_words = ["proven", "essential", "ultimate", "complete", "definitive"]
-    word = random.choice(power_words)
-    new_title = f"{random.randint(5, 15)} {word} tips: {title}"
-    return new_title
+    # strip existing year tags and prefixes
+    clean = title.split(":")[0].strip() if ":" in title else title
+
+    rewrites = {
+        "add number + power word": lambda t: f"{random.randint(7,15)} proven strategies for {t.lower()}",
+        "rewrite as question": lambda t: f"what's the best approach to {t.lower()}?",
+        "prepend (2026)": lambda t: f"(2026 updated) {t}",
+        "action verb opener": lambda t: f"master {t.lower()} today",
+    }
+
+    style = strategy.get("title", "add number + power word")
+    rewrite_fn = rewrites.get(style, rewrites["add number + power word"])
+    return rewrite_fn(clean)
 
 
 def measure_targets(target_ids: list[str], start_date, end_date) -> dict:
